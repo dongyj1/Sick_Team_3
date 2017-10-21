@@ -26,4 +26,5 @@ with open('object.csv', 'w') as csvfile:
     for key in objects.keys():
         print(key)
         object_feature.append(objects.get(key))
+    filewriter.writerow(object_feature)
  """
