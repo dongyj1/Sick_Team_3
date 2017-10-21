@@ -18,4 +18,12 @@ for child in root:
     # dictionary[child.tag] = child.attrib
     if(child.tag=='objectdata'):
 
-
+"""
+import csv
+with open('object.csv', 'w') as csvfile:
+    filewriter = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    object_feature = []
+    for key in objects.keys():
+        print(key)
+        object_feature.append(objects.get(key))
+ """
