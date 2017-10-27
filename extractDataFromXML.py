@@ -17,7 +17,8 @@ def find_element(dictionary, child):
     if (len(child.getchildren()) != 0):
         for i in range(len(child.getchildren())):
             if(child.getchildren()[i].tag == 'value'):
-                dictionary[child.tag] = child.getchildren()[i].text
+                dictionary[child.tag] = [float(child.getchildren()[i].text)]
+                dictionary[child.tag].append(child.attrib.get('unit'))
             elif(child.tag == 'general' and child.getchildren()[i].tag == 'timestamp'):
                 dictionary['timestamp1'] = child.getchildren()[i].text
             elif(child.tag == 'barcode'):
@@ -36,15 +37,19 @@ def find_element(dictionary, child):
                 if(att == 'unit'):
                     pass
                 else:
-                    dictionary[att] = child.attrib.get(att)
+                    dictionary[att] = [float(child.attrib.get(att))]
+                    dictionary[att].append(child.attrib.get('unit'))
         else:
-            dictionary[child.tag] = child.text
+            try:
+                dictionary[child.tag] = float(child.text)
+            except:
+                dictionary[child.tag] = child.text
         return
 
 #----------main-----------
 
-with open('object.csv', 'w') as csvfile:
-    filewriter = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+with open('object_all.csv', 'w') as csvfile:
+    filewriter = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL,dialect = 'unix')
 
     filename = ['production_xmldata.2017-07-04.xml',
                 'production_xmldata.2017-07-05.xml',
@@ -87,49 +92,52 @@ with open('object.csv', 'w') as csvfile:
                 'production_xmldata.2017-08-15.xml',
                 ]
     
-    for file in filename:
-        
-        data = ''
-        with open(filename, 'r') as f:
-            data = f.read().replace('\n', '')
-        if (not data.startswith('<data>')):
-            data = '<data>'+data+'</data>'
+    #for file in filename:
     
-        #dictionary = {}
-        root = ET.fromstring(data)
-        # print(data)
-        print(root)
-        #child = root[0]
-        for child in root[:100]:
-            # dictionary[child.tag] = child.attrib
-            if(child.tag=='objectdata'):
-                dictionary = {}
-                #print(len(child.getchildren()))
-                for i in child.getchildren():
-                    find_element(dictionary, child)
-                #---trans conditon---
-                if('condition' not in dictionary.keys()):
-                    raise Exception
-                con = dictionary.get('condition')
-                print(con)
-                all_conditions = ['TooBig','NoRead','NotLFT','LFT','MultiRead','Irreg','TooSmall','Gap','ValidDim','ValidRead','Clipping','PeError']
-                for j in all_conditions:
-                    if(j == 'NotLFT' and j in con):
-                        dictionary['LFT'] = 0
-                    elif(j == 'NotLFT' and j not in con):
-                        pass
-                    elif(j == 'LFT' and j in dictionary.keys()):
-                        pass
+    data = ''
+    ##################################################################
+    #########change filename[] to read from xml files#################
+    with open(filename[1], 'r') as f:
+    ##################################################################
+        data = f.read().replace('\n', '')
+    if (not data.startswith('<data>')):
+        data = '<data>'+data+'</data>'
+
+    #dictionary = {}
+    root = ET.fromstring(data)
+    # print(data)
+    print(root)
+    #child = root[0]
+    for child in root:
+        # dictionary[child.tag] = child.attrib
+        if(child.tag=='objectdata'):
+            dictionary = {}
+            #print(len(child.getchildren()))
+            for i in child.getchildren():
+                find_element(dictionary, child)
+            #---trans conditon---
+            if('condition' not in dictionary.keys()):
+                raise Exception
+            con = dictionary.get('condition')
+            print(con)
+            all_conditions = ['TooBig','NoRead','NotLFT','LFT','MultiRead','Irreg','TooSmall','Gap','ValidDim','ValidRead','Clipping','PeError']
+            for j in all_conditions:
+                if(j == 'NotLFT' and j in con):
+                    dictionary['LFT'] = 0
+                elif(j == 'NotLFT' and j not in con):
+                    pass
+                elif(j == 'LFT' and j in dictionary.keys()):
+                    pass
+                else:
+                    if(j in con):
+                        dictionary[j] = 1
                     else:
-                        if(j in con):
-                            dictionary[j] = 1
-                        else:
-                            dictionary[j] = 0
-                dictionary.pop('condition')
-                #------write in csv--------------
-                object_feature = []
-                for key in dictionary.keys():
-                    object_feature.append(key)
-                    object_feature.append(dictionary.get(key))
-                filewriter.writerow(object_feature)
-        
+                        dictionary[j] = 0
+            dictionary.pop('condition')
+            #------write in csv--------------
+            object_feature = []
+            for key in dictionary.keys():
+                #object_feature.append(key)
+                object_feature.append(dictionary.get(key))
+            filewriter.writerow(object_feature)
+    
