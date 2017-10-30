@@ -62,7 +62,7 @@ def find_element(dictionary, child):
 
 
 #----------main-----------
-filename = ['Dataset_MachineLearning/production_xmldata.2017-07-04.xml',
+"""filename = ['Dataset_MachineLearning/production_xmldata.2017-07-04.xml',
             'Dataset_MachineLearning/production_xmldata.2017-07-05.xml',
             'Dataset_MachineLearning/production_xmldata.2017-07-06.xml',
             'Dataset_MachineLearning/production_xmldata.2017-07-07.xml',
@@ -90,7 +90,8 @@ filename = ['Dataset_MachineLearning/production_xmldata.2017-07-04.xml',
             'Dataset_MachineLearning/production_xmldata.2017-07-29.xml',
             'Dataset_MachineLearning/production_xmldata.2017-07-30.xml',
             'Dataset_MachineLearning/production_xmldata.2017-07-31.xml',
-            'Dataset_MachineLearning/production_xmldata.2017-08-01.xml',
+            """
+filename = ['Dataset_MachineLearning/production_xmldata.2017-08-01.xml',
             'Dataset_MachineLearning/production_xmldata.2017-08-02.xml',
             'Dataset_MachineLearning/production_xmldata.2017-08-03.xml',
             'Dataset_MachineLearning/production_xmldata.2017-08-04.xml',
@@ -106,8 +107,8 @@ filename = ['Dataset_MachineLearning/production_xmldata.2017-07-04.xml',
             'Dataset_MachineLearning/production_xmldata.2017-08-14.xml',
             'Dataset_MachineLearning/production_xmldata.2017-08-15.xml',
             ]
-mon = 7
-day = 4
+mon = 8
+day = 1
 
 for file in filename:
     flag = True
@@ -161,14 +162,19 @@ for file in filename:
                     dictionary.pop('condition')
                 #------write in csv--------------
                     object_feature = []
+                    object_feature_name = []
                     for key in dictionary.keys():
-                        object_feature.append(key)
+                        object_feature_name.append(key)
                         object_feature.append(dictionary.get(key))
                     #owe data may be missed in some data
                     #if no owe data in the dict, here just add "-1" value to owe
                     #to make sure all the features have same length
-                    if "owe" not in object_feature:
-                        object_feature = object_feature[:38] + ["owe",-1] + object_feature[38:]
+                    if (count == 0):
+                        filewriter.writerow(object_feature_name)
+                    if "owe" not in object_feature_name:
+                        #print(object_feature_name)
+                        object_feature = object_feature[:28] + ['-1','LB'] + object_feature[28:]
+                        #print(object_feature)
                     filewriter.writerow(object_feature)
                     count +=1
                     #print("Now is processing #",count," line of data")
