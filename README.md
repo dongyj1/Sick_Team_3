@@ -1,5 +1,5 @@
 # -Learning From Sensor Data-
-SICK 3: Changlong Jiang, Yangjiang Dong, Gaomeizhu Qu, Yuxuan Su
+
 
 # 1. Project Task
 Our project is to investigate the relationship between different attributes and learn some potential rules from the dataset provided by SICK. 
@@ -32,22 +32,28 @@ Out input array is
 We found out if we took condition ValidRead and ValidDim as input, we could predict LFT label with 100 percent. 
 
 ## 3.2 Speed Attribute Evaluation
-
+For evaluating the belt speed over time, we firstly plot the time series to ituitively show the speed behavior. And then we also found the mean and deviation value in one single day and in the whole time. About the analysis of correlation between the belt speed and LFT/Not LFT label, we calculate the correlation on every single day and we also used LSTM to analyze the effect of belt speed on LFT. 
 ## 3.3 Gap Information 
-
+  For outlier determination with gap information and timestamp, after plotting all the relevant data it is shown that the Gap condition is determined only by “oga” and objects with negative "oga" should be outliers.
+   To get the boundary for Gap information specific, we implemented Logistic Regression and Robust linear model. 
+   First, to get the relation between "oga" information and each adjacent objects' time interval, we use Robust linear model to fit the data. The input of Robust model is [x = array(time interval information) , y = array("oga")] and the output is co-efficiency of these two variables. The result intends that it is not necessary to consider both time interval and "oga" for "Gap" investigation.
+   After plotting the "oga" and it's "Gap" condition, it is clearly separated into two parts along "oga" value. So we used logistic regression to implement. The input of logistic regression is “oga” without negative “oga” objects, which is split using cross_validation.train_test_split() function imported from Sklearn. And the output of this model is the linear relation and the boundary of data.
 ## 3.4 "Pipe Up" & "Log Jap"
 
 ## 3.5 Outlier Detection
 
 # 4. Dataset and Metric
-
+Our dataset is provided in XML format which includes two kinds of information object data and heartbeat data. Object data corresponds to information collected from every single package through the camera. Heartbeat data refers to the state of the sensor system. We extracted original data from XML files into several CSV files. In the XML file, each object and heartbeat is stored as an element tree. We implemented DFS algorithm to traverse each root’s children and extracted useful data into a dictionary. As a result, for each XML file, the valid data is stored in two CSV files, one is for object data and the other is for heartbeat data.
 
 # 5. Evaluation
 
 
 # 6. Conclusion
-
-
+## 6.1 LFT Condition Exploration
+## 6.2 Speed Attribute Evaluation
+## 6.3 Gap detection
+For outlier determination with Gap and correlative with timestamp, it is shown that the relation about oga(gap information) and time interval for each object is clearly linear. And the boundary of oga which is used to determine Gap condition is about 15.
+## 6.4 "Pipe Up" & "Log Jap"
 # 7. Roles
 
 
