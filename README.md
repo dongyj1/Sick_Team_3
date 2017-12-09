@@ -34,7 +34,10 @@ We found out if we took condition ValidRead and ValidDim as input, we could pred
 ## 3.2 Speed Attribute Evaluation
 For evaluating the belt speed over time, we firstly plot the time series to ituitively show the speed behavior. And then we also found the mean and deviation value in one single day and in the whole time. About the analysis of correlation between the belt speed and LFT/Not LFT label, we calculate the correlation on every single day and we also used LSTM to analyze the effect of belt speed on LFT. 
 ## 3.3 Gap Information 
-
+  For outlier determination with gap information and timestamp, after plotting all the relevant data it is shown that the Gap condition is determined only by “oga” and objects with negative "oga" should be outliers.
+To get the boundary for Gap information specific, we implemented Logistic Regression and Robust linear model. 
+First, to get the relation between "oga" information and each adjacent objects' time interval, we use Robust linear model to fit the data and the result detected few outliers, which means time interval bewteen two adjacent objects and "oga" information is linearly dependent. So it is not necessary to consider both time interval and "oga" for "Gap" investigation.
+	After plotting the "oga" and it's "Gap" condition, it is clearly separated into two parts along "oga" value. So we used logistic regression to implement. The input of logistic regression is “oga” without negative “oga” objects, which is split using cross_validation.train_test_split() function imported from Sklearn. And the output of this model is the linear relation and the boundary of data.
 ## 3.4 "Pipe Up" & "Log Jap"
 
 ## 3.5 Outlier Detection
