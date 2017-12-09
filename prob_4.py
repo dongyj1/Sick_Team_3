@@ -15,15 +15,17 @@ from sklearn.metrics import f1_score
 from sklearn.ensemble import RandomForestClassifier
 from datetime import datetime
 from sklearn.metrics import roc_curve, auc
-
+import time
 
 def transferTime(timestamp): 
     #to transfer timestamp to datetime type
+    #where timestamp is pandas dataframe
     for i in range(len(timestamp)):
-        timestamp[i] = datetime.strptime(timestamp[i], '%Y-%m-%dT%H:%M:%S.%f')
+        temp = datetime.strptime(timestamp.loc[i,"timestamp"], '%Y-%m-%dT%H:%M:%S.%f')
+        timestamp.loc[i,"timestamp"] = time.mktime(temp.timetuple())
     return timestamp
 
-def readDataTonp(filename,datalist):
+def readDataTop(filename,datalist):
     df = pd.read_csv(filename)
     df = df.loc[: , datalist]
 
@@ -95,11 +97,31 @@ def initialize_parameters(n_x, n_h, n_y):
     return parameters    
 
 
-def calculate_throughput(object_data, heartbeat_data):
+def calculate_throughput(object_data,heart_data):
     #calculate throughput of one day and write them into heartbeat data
     datalist = ["timestamp"]
-    
-    pass
+    obj_time_data = transferTime(readDataTop(object_data,datalist))
+    heart_time_data = transferTime(readDataTop(heart_data,datalist))
+    df = pd.read_csv(heart_data)
+    idx = 0
+    counter = 0
+    for j in range(len(obj_time_data)):
+        #print("heart time" + str(heart_time_data.loc[idx,"timestamp"]))
+        #print("obj time" + str(obj_time_data.loc[j,"timestamp"]))
+        
+        if(int(obj_time_data.loc[j,"timestamp"]) <= int(heart_time_data.loc[idx,"timestamp"]) and int(obj_time_data.loc[j,"timestamp"]) > int(heart_time_data.loc[idx,"timestamp"])-60):
+            counter += 1
+        else:
+            heart_time_data.loc[idx,"throughput"] = counter
+            counter = 1
+            idx += 1
+    for i in range(len(heart_time_data)):
+        if (str(heart_time_data.loc[i,"throughput"])  == "nan"):
+            heart_time_data.loc[i,"throughput"] = 0
+    heart_time_data = heart_time_data.loc[: , "throughput"]
+    df = pd.concat([df, heart_time_data], axis=1, join_axes=[df.index])
+    df.to_csv(heart_data)
+#print("+++++++++++++++++++++")
 #===============main=========================
 filename = ["Object data/object7.4.csv",
             "Object data/object7.5.csv",
@@ -145,13 +167,57 @@ filename = ["Object data/object7.4.csv",
             "Object data/object8.14.csv",
             "Object data/object8.15.csv",]
 
+heart_filename = ["Heartbeat data/heartbeat7.4.csv",
+            "Heartbeat data/heartbeat7.5.csv",
+            "Heartbeat data/heartbeat7.6.csv",
+            "Heartbeat data/heartbeat7.7.csv",
+            "Heartbeat data/heartbeat7.8.csv",
+            "Heartbeat data/heartbeat7.9.csv",
+            "Heartbeat data/heartbeat7.10.csv",
+            "Heartbeat data/heartbeat7.11.csv",
+            "Heartbeat data/heartbeat7.12.csv",
+            "Heartbeat data/heartbeat7.13.csv",
+            "Heartbeat data/heartbeat7.14.csv",
+            "Heartbeat data/heartbeat7.15.csv",
+            "Heartbeat data/heartbeat7.16.csv",
+            "Heartbeat data/heartbeat7.17.csv",
+            "Heartbeat data/heartbeat7.18.csv",
+            "Heartbeat data/heartbeat7.19.csv",
+            "Heartbeat data/heartbeat7.20.csv",
+            "Heartbeat data/heartbeat7.21.csv",
+            "Heartbeat data/heartbeat7.22.csv",
+            "Heartbeat data/heartbeat7.23.csv",
+            "Heartbeat data/heartbeat7.24.csv",
+            "Heartbeat data/heartbeat7.25.csv",
+            "Heartbeat data/heartbeat7.26.csv",
+            "Heartbeat data/heartbeat7.27.csv",
+            "Heartbeat data/heartbeat7.28.csv",
+            "Heartbeat data/heartbeat7.29.csv",
+            "Heartbeat data/heartbeat7.30.csv",
+            "Heartbeat data/heartbeat7.31.csv",
+            "Heartbeat data/heartbeat8.1.csv",
+            "Heartbeat data/heartbeat8.2.csv",
+            "Heartbeat data/heartbeat8.3.csv",
+            "Heartbeat data/heartbeat8.4.csv",
+            "Heartbeat data/heartbeat8.5.csv",
+            "Heartbeat data/heartbeat8.6.csv",
+            "Heartbeat data/heartbeat8.7.csv",
+            "Heartbeat data/heartbeat8.8.csv",
+            "Heartbeat data/heartbeat8.9.csv",
+            "Heartbeat data/heartbeat8.10.csv",
+            "Heartbeat data/heartbeat8.11.csv",
+            "Heartbeat data/heartbeat8.12.csv",
+            "Heartbeat data/heartbeat8.13.csv",
+            "Heartbeat data/heartbeat8.14.csv",
+            "Heartbeat data/heartbeat8.15.csv",]
 
 pileDf = pd.DataFrame()#inital dataframe
 allDf = pd.DataFrame()#inital dataframe
 datalist = [ 'oga' , 'seqnb' , 'Irreg' , 'MultiRead' , 'TooBig' , 'Gap']
 for file in filename:
     try:
-        tmpDf = readDataTonp(file, datalist)
+        tmpDf = readDataTop(file, datalist)
+        
     except:
         pass
     findSideBySide(tmpDf)# sutract all the features we needs
@@ -165,7 +231,7 @@ allDf = allDf.loc[: , [  'Irreg' , 'MultiRead' , 'TooBig' , 'pileUp']]
 
 
 #================================training==============================
-
+"""
 X = np.array(allDf.loc[: , [  'Irreg' , 'MultiRead' , 'TooBig' ]])
 y = np.array(allDf['pileUp'])
 #X[:,0]=X[:,0].astype(int)
@@ -178,7 +244,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 
 """
-Ligistic Regression
+#Ligistic Regression
 """
 clf_ligistic = linear_model.LogisticRegression(C=1e5)
 clf_ligistic.fit(X_train, y_train)
@@ -189,7 +255,7 @@ print('Ligistic Regression Score: ', accuracy)
 #n_classes = y.shape[1]
 
 """
-Random Forest
+#Random Forest
 """
 clf_RF = RandomForestClassifier(n_jobs=2, random_state=0)
 clf_RF.fit(X_train, y_train)
@@ -198,3 +264,4 @@ y_score1 = clf_RF.predict(X_test)
 print("f1 score of pridiction is ", f1_score(y_test,y_score1,average = 'macro'))
 print('Random Forest Score', accuracy)
 print('This is the importances of different features: ',clf_RF.feature_importances_)
+"""
