@@ -1,7 +1,7 @@
 ## -Learning From Sensor Data-
 SICK 3: Changlong Jiang, Yangjiang Dong, Gaomeizhu Qu, Yuxuan Su
 
-# 1. Project Task
+## 1. Project Task
 Our project is to investigate the relationship between different attributes and learn some potential rules from the dataset provided by SICK. 
 We are given 5 expectation questions which are:
 
@@ -23,20 +23,28 @@ o	Recurring errors observed in the Heart Beat data section
 
 To sum up, We need to build a classification model which the output label is LFT and the input attributes are other condistions and information. We also need to figure out how to transfer package trends, 'Pileyp', 'Log Jam' to clear data.
 
-# 2. Related Work
-# 3. Approach
+## 2. Related Work
+## 3. Approach
+# 3.1 LFT Condition Exploration
+
+# 3.2 Speed Attribute Evaluation
+
+# 3.3 Gap Information 
+
+# 3.4 "Pipe Up" & "Log Jap"
+
+# 3.5 Outlier Detection
+
+## 4. Dataset and Metric
 
 
-# 4. Dataset and Metric
+## 5. Evaluation
 
 
-# 5. Evaluation
+## 6. Conclusion
 
 
-# 6. Conclusion
-
-
-# 7. Roles
+## 7. Roles
 
 
 
