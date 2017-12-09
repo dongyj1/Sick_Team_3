@@ -43,14 +43,17 @@ First, to get the relation between "oga" information and each adjacent objects' 
 ## 3.5 Outlier Detection
 
 # 4. Dataset and Metric
-
+Our dataset is provided in XML format which includes two kinds of information object data and heartbeat data. Object data corresponds to information collected from every single package through the camera. Heartbeat data refers to the state of the sensor system. We extracted original data from XML files into several CSV files. In the XML file, each object and heartbeat is stored as an element tree. We implemented DFS algorithm to traverse each root’s children and extracted useful data into a dictionary. As a result, for each XML file, the valid data is stored in two CSV files, one is for object data and the other is for heartbeat data.
 
 # 5. Evaluation
 
 
 # 6. Conclusion
-
-
+## 6.1 LFT Condition Exploration
+## 6.2 Speed Attribute Evaluation
+## 6.3 Gap detection
+For outlier determination with Gap and correlative with timestamp, it is shown that the relation about oga(gap information) and time interval for each object is clearly linear. And the boundary of oga which is used to determine Gap condition is about 15.
+## 6.4 "Pipe Up" & "Log Jap"
 # 7. Roles
 
 
