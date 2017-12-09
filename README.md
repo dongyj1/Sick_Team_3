@@ -27,6 +27,10 @@ To sum up, We need to build a classification model which the output label is LFT
 # 3. Approach
 ## 3.1 LFT Condition Exploration
 
+We first implement Logistic Regression, SVM, random forest, Adaboost and MLP to predict the LFT label.
+Out input array is 
+We found out if we took condition ValidRead and ValidDim as input, we could predict LFT label with 100 percent. 
+
 ## 3.2 Speed Attribute Evaluation
 
 ## 3.3 Gap Information 
