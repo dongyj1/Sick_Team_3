@@ -32,7 +32,7 @@ Out input array is
 We found out if we took condition ValidRead and ValidDim as input, we could predict LFT label with 100 percent. 
 
 ## 3.2 Speed Attribute Evaluation
-
+For evaluating the belt speed over time, we firstly plot the time series to ituitively show the speed behavior. And then we also found the mean and deviation value in one single day and in the whole time. About the analysis of correlation between the belt speed and LFT/Not LFT label, we calculate the correlation on every single day and we also used LSTM to analyze the effect of belt speed on LFT. 
 ## 3.3 Gap Information 
 
 ## 3.4 "Pipe Up" & "Log Jap"
