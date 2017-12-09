@@ -1,5 +1,5 @@
 # -Learning From Sensor Data-
-SICK 3: Changlong Jiang, Yangjiang Dong, Gaomeizhu Qu, Yuxuan Su
+
 
 # 1. Project Task
 Our project is to investigate the relationship between different attributes and learn some potential rules from the dataset provided by SICK. 
