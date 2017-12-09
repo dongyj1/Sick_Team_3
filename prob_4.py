@@ -20,7 +20,7 @@ from sklearn.metrics import roc_curve, auc
 def transferTime(timestamp): 
     #to transfer timestamp to datetime type
     for i in range(len(timestamp)):
-        time_data.loc[i,"timestamp"] = datetime.strptime(time_data.loc[i,"timestamp"], '%Y-%m-%dT%H:%M:%S.%f')
+        timestamp[i] = datetime.strptime(timestamp[i], '%Y-%m-%dT%H:%M:%S.%f')
     return timestamp
 
 def readDataTonp(filename,datalist):
@@ -95,12 +95,9 @@ def initialize_parameters(n_x, n_h, n_y):
     return parameters    
 
 
-def calculate_throughput(object_data_file, heartbeat_data):
+def calculate_throughput(object_data, heartbeat_data):
     #calculate throughput of one day and write them into heartbeat data
     datalist = ["timestamp"]
-    time_data = readDataTonp(object_data_file,datalist)
-    initial_time = datetime.strptime(time_data.loc[0,"timestamp"], '%Y-%m-%dT%H:%M:%S.%f')
-    
     
     pass
 #===============main=========================
@@ -164,12 +161,11 @@ for file in filename:
     allDf = allDf.append(tmpDf)
 
 allDf = allDf.loc[: , [  'Irreg' , 'MultiRead' , 'TooBig' , 'pileUp']]
-datalist = ["timestamp"]
-time_data = readDataTonp(filename[0],datalist)
+
 
 
 #================================training==============================
-"""
+
 X = np.array(allDf.loc[: , [  'Irreg' , 'MultiRead' , 'TooBig' ]])
 y = np.array(allDf['pileUp'])
 #X[:,0]=X[:,0].astype(int)
@@ -181,8 +177,9 @@ print(len(X),len(y))
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 
-#Ligistic Regression
-
+"""
+Ligistic Regression
+"""
 clf_ligistic = linear_model.LogisticRegression(C=1e5)
 clf_ligistic.fit(X_train, y_train)
 accuracy = clf_ligistic.score(X_test, y_test)
@@ -191,8 +188,9 @@ print("f1 score of pridiction is ", f1_score(y_test,y_score,average = 'macro'))
 print('Ligistic Regression Score: ', accuracy)
 #n_classes = y.shape[1]
 
-#Random Forest
-
+"""
+Random Forest
+"""
 clf_RF = RandomForestClassifier(n_jobs=2, random_state=0)
 clf_RF.fit(X_train, y_train)
 accuracy = clf_RF.score(X_test, y_test)
@@ -200,4 +198,3 @@ y_score1 = clf_RF.predict(X_test)
 print("f1 score of pridiction is ", f1_score(y_test,y_score1,average = 'macro'))
 print('Random Forest Score', accuracy)
 print('This is the importances of different features: ',clf_RF.feature_importances_)
-"""
