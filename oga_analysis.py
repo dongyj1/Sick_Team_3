@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
-from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.linear_model import LogisticRegression, LinearRegression, RANSACRegressor
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import accuracy_score
 
@@ -138,22 +138,31 @@ print("intercept: ",LogReg.intercept_)
 print("========================================")
 y_training_oga = np.array(x['oga'])
 X_time_train, X_time_test, Y_time_train, Y_time_test = train_test_split(x_interval_training.reshape(-1,1), y_training_oga.reshape(len(x['gap']),), test_size = 0.2, random_state = 42)
+
+
 from sklearn.metrics import mean_squared_error, r2_score
+#LogReg_time = LinearRegression()
+#LogReg_time.fit(X_time_train, Y_time_train)
 
+ransac_time = RANSACRegressor()
+ransac_time.fit(X_time_train, Y_time_train)
 
-LogReg_time = LinearRegression()
-LogReg_time.fit(X_time_train, Y_time_train)
-y_time_pred = LogReg_time.predict(X_time_test)
+y_time_pred = ransac_time.predict(X_time_test)
 err = mean_squared_error(Y_time_test, y_time_pred)
 r2_score(Y_time_test, y_time_pred)
-print("err:", err)
-print("variance:", r2_score)
-print("coef: ", LogReg_time.coef_)
-print("intercept: ",LogReg_time.intercept_)
 
+#print("err:", err)
+#print("variance:", r2_score)
+#print("coef: ", ransac_time.coef_)
+#print("intercept: ",ransac_time.intercept_)
+print("coef:", ransac_time.estimator_.coef_)
+
+plt.title("oga - timeInterval")
+plt.xlabel("timeInterval")
+plt.ylabel("oga")
 plt.scatter(X_time_test, Y_time_test,  color='black')
 plt.plot(X_time_test, y_time_pred, color='blue', linewidth=3)
-
+plt.axis()
 plt.xticks(())
 plt.yticks(())
 
@@ -167,23 +176,4 @@ plt.axis([-1,1400,-1, 20])
 '''
 #========subtime & oga=================#
 print("========================================")
-'''
-X_2_train, X_2_test, Y_2_train, Y_2_test = train_test_split(x_2_training, y_training.reshape(len(x['gap']),), test_size = 0.2, random_state = 42)
-
-
-LogReg_2 = LogisticRegression(solver = 'sag',multi_class = 'multinomial', penalty = 'l2', C = 1)
-LogReg_2.fit_intercept = True
-LogReg_2.fit(X_2_train, Y_2_train)
-y_2_pred = LogReg_2.predict(X_2_test)
-print("the accuracy of it is:", accuracy_score(Y_2_test, LogReg_2.predict(X_2_test)))
-from sklearn.metrics import classification_report
-print(classification_report(Y_2_test, LogReg_2.predict(X_2_test)))
-
-from sklearn.metrics import confusion_matrix
-confusion_matrix_2 = confusion_matrix(Y_2_test, y_2_pred)
-print(confusion_matrix_2)
-
-print("coef: ", LogReg_2.coef_)
-print("intercept: ",LogReg_2.intercept_)
-'''
 
