@@ -138,12 +138,12 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 		agg.dropna(inplace=True)
 	return agg
 
-path = "/Users/xogoss/Documents/boston/CS542/project/Sick_Team_3-master/proagain" #文件夹目录  
+path = "./proagain" #文件夹目录  
 files= os.listdir(path)
 files = files[1:]
 s=[]
 for i in files:
-    k = read_csv('proagain/'+i, header=0, index_col=0)
+    k = read_csv('./proagain/'+i, header=0, index_col=0)
     s.append(k)
 dataset = pd.concat(s)
 
