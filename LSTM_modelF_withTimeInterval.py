@@ -181,11 +181,11 @@ n_train_hours = -50000
 train = values[:n_train_hours, :]
 test = values[n_train_hours:, :]
 # split into input and outputs
-X = np.concatenate((train[:,:29], train[:,30:]), axis=1)
-train_X = np.concatenate((train[:,:29], train[:,30:]), axis=1)
-train_y = train[:, 29]
-test_X = np.concatenate((test[:,:29], test[:,30:]), axis=1)
-test_y = test[:, 29]
+X = np.concatenate((train[:,:30], train[:,31:]), axis=1)
+train_X = np.concatenate((train[:,:30], train[:,31:]), axis=1)
+train_y = train[:, 30]
+test_X = np.concatenate((test[:,:30], test[:,31:]), axis=1)
+test_y = test[:, 30]
 
 # reshape input to be 3D [samples, timesteps, features]
 train_X = train_X.reshape((train_X.shape[0], 1, train_X.shape[1]))
