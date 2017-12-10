@@ -41,12 +41,12 @@ For evaluating the belt speed over time, we firstly plot the time series to itui
 ## 3.4 "Pipe Up" & "Log Jap"
 
 ## 3.5 Outlier Detection
-
+  # 3.5.1 Unit outlier
+    There are not many unit outliers in the dataset. For all the units, only speed_unit, otl_unit, oga_unit, size_unit, obv_unit and orv_unit has randomly changed for 895 times. And furthermore, all these units changed at the same time for a object observation. They are all showing randomly in the data sets. Although the units are changed, the value changed correspondingly, so the final results won't be affected.
 # 4. Dataset and Metric
 Our dataset is provided in XML format which includes two kinds of information object data and heartbeat data. Object data corresponds to information collected from every single package through the camera. Heartbeat data refers to the state of the sensor system. We extracted original data from XML files into several CSV files. In the XML file, each object and heartbeat is stored as an element tree. We implemented DFS algorithm to traverse each root’s children and extracted useful data into a dictionary. As a result, for each XML file, the valid data is stored in two CSV files, one is for object data and the other is for heartbeat data.
 
 # 5. Evaluation
-
 
 # 6. Conclusion
 ## 6.1 LFT Condition Exploration
