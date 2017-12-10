@@ -1,26 +1,40 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Nov 16 01:10:59 2017
+Created on Sat Dec  9 19:12:53 2017
 
 @author: xogoss
 """
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Dec  9 15:54:02 2017
+
+@author: xogoss
+"""
+
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
-from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.linear_model import LogisticRegression, LinearRegression, RANSACRegressor
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn import svm
+import os
 
-
-filelist = ["object7.4.csv","object7.5.csv"]
+#path = "/Users/xogoss/Documents/boston/CS542/project/Sick_Team_3-master/Object data" #文件夹目录  
+#fileslist= os.listdir(path)
+#fileslist = fileslist[1:]
+fileslist = ['object7.4.csv', 'object7.5.csv','object7.6.csv','object7.7.csv','object7.8.csv','object7.10.csv','object7.11.csv','object7.12.csv','object7.13.csv','object7.14.csv','object7.15.csv','object7.16.csv','object7.17.csv','object7.18.csv','object7.19.csv','object7.20.csv','object7.21.csv','object7.22.csv','object7.23.csv','object7.26.csv','object7.27.csv','object7.28.csv','object7.29.csv','object7.30.csv','object7.31.csv','object8.1.csv','object8.2.csv','object8.3.csv','object8.4.csv','object8.5.csv','object8.6.csv','object8.7.csv','object8.8.csv','object8.9.csv','object8.11.csv','object8.12.csv','object8.14.csv','object8.15.csv']
+#fileslist = ['object7.4.csv']
 x = pd.DataFrame()
 x_t = pd.DataFrame()
 y = []
 
-for file in filelist:
+for file in fileslist:
     df = pd.read_csv(file)
     #print(df.columns)
     temp = pd.DataFrame()
@@ -69,121 +83,58 @@ for file in filelist:
     
     time_datetime = []
     time_interval = []
-    '''
-    for time in temp_time:
-        cur_date = datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%f")
-        time_datetime.append(cur_date)
-        time_interval.append((cur_date - time_datetime[len(time_datetime)-2]).total_seconds())
-    temp['timestamp'] = pd.Series(time_datetime)
-    temp['sub_time'] = pd.Series(time_interval)
-    temp = temp.drop(0)
-    '''
+
     x = x.append(temp)
     x_t = x_t.append(temp_t)
-
-plt.title("y = gap, x = oga")
-plt.plot(x['oga'],x['gap'],'ro')
-plt.axis([-1,20,-1,1])
-plt.show()
-
-plt.title("y = gap, x = oga")
-plt.plot(x['oga'],x['gap'],'ro')
-plt.axis([12,17,-1,1])
-plt.show()
-
-plt.title("y = gap, x = sub_time")
-plt.plot(x['sub_time'],x['gap'],'ro')
-plt.axis([-1,20,-1,1])
-plt.show()
-
-plt.title("correlation between oga and time interval")
-plt.ylabel('oga')
-plt.xlabel('time_interval')
-plt.plot(x['sub_time'],x['oga'],'yo')
-plt.axis([-1,20,-100,1500])
-plt.show()
-
-plt.title("y = negative oga, x = sub_time")
-plt.plot(x_t['sub_time'],x_t['oga'],'ro')
-plt.axis([-1,20,-2000,500])
-plt.show()
-
-
-#=======================================#
-
+    
+#########################################
+#########################################
+#########################################
 x_training = np.array(x['oga'])
 y_training = np.array(x['gap'])
-
-x_interval_training = np.array(x['sub_time'])
-x_2_training = np.array([x['sub_time'], x['oga']]).T
-
 X_train, X_test, Y_train, Y_test = train_test_split(x_training.reshape(-1,1), y_training.reshape(len(x['gap']),), test_size = 0.2, random_state = 42)
 
-LogReg = LogisticRegression(penalty = 'l1', C = 1)
-LogReg.fit_intercept = True
-LogReg.fit(X_train, Y_train)
-y_pred = LogReg.predict(X_test)
-print("the accuracy of it is:", accuracy_score(Y_test, LogReg.predict(X_test)))
-from sklearn.metrics import classification_report
-print(classification_report(Y_test, LogReg.predict(X_test)))
+X = X_train
+y = Y_train
 
-from sklearn.metrics import confusion_matrix
-confusion_matrix = confusion_matrix(Y_test, y_pred)
-print(confusion_matrix)
+pos = np.array([X[i] for i in range(X.shape[0]) if y[i] == 1])
+neg = np.array([X[i] for i in range(X.shape[0]) if y[i] != 1])
+pos = pos.flatten()
+neg = neg.flatten()
+#pos = np.hstack((pos, np.zeros((len(pos), 1))))
+#neg = np.hstack((neg, np.zeros((len(neg), 1))))
+pos_y = np.ones(len(pos))
+neg_y = np.zeros(len(neg))
 
-print("coef: ", LogReg.coef_)
-print("intercept: ",LogReg.intercept_)
+#X = np.r_[pos, neg]
+#Y = np.array([0] * len(neg) + [1] * len(pos))
+print(X.shape, y.shape)
+clf = svm.SVC(kernel='linear')
+clf.fit(X, y)
+threshold = (-clf.intercept_/clf.coef_).flatten()[0]
+print(-clf.intercept_/clf.coef_)
 
-#=======time interval & gap=============#
-print("========================================")
-y_training_oga = np.array(x['oga'])
-X_time_train, X_time_test, Y_time_train, Y_time_test = train_test_split(x_interval_training.reshape(-1,1), y_training_oga.reshape(len(x['gap']),), test_size = 0.2, random_state = 42)
-from sklearn.metrics import mean_squared_error, r2_score
-
-
-LogReg_time = LinearRegression()
-LogReg_time.fit(X_time_train, Y_time_train)
-y_time_pred = LogReg_time.predict(X_time_test)
-err = mean_squared_error(Y_time_test, y_time_pred)
-r2_score(Y_time_test, y_time_pred)
-print("err:", err)
-print("variance:", r2_score)
-print("coef: ", LogReg_time.coef_)
-print("intercept: ",LogReg_time.intercept_)
-
-plt.scatter(X_time_test, Y_time_test,  color='black')
-plt.plot(X_time_test, y_time_pred, color='blue', linewidth=3)
-
-plt.xticks(())
-plt.yticks(())
-
-plt.show()
-
-'''
-by = LogReg_time.coef_ * X_time_train
-plt.plot(by,[-1, 20],'b-',label='Decision Boundary')
-plt.legend()
-plt.axis([-1,1400,-1, 20])
-'''
-#========subtime & oga=================#
-print("========================================")
-'''
-X_2_train, X_2_test, Y_2_train, Y_2_test = train_test_split(x_2_training, y_training.reshape(len(x['gap']),), test_size = 0.2, random_state = 42)
-
-
-LogReg_2 = LogisticRegression(solver = 'sag',multi_class = 'multinomial', penalty = 'l2', C = 1)
-LogReg_2.fit_intercept = True
-LogReg_2.fit(X_2_train, Y_2_train)
-y_2_pred = LogReg_2.predict(X_2_test)
-print("the accuracy of it is:", accuracy_score(Y_2_test, LogReg_2.predict(X_2_test)))
-from sklearn.metrics import classification_report
-print(classification_report(Y_2_test, LogReg_2.predict(X_2_test)))
-
-from sklearn.metrics import confusion_matrix
-confusion_matrix_2 = confusion_matrix(Y_2_test, y_2_pred)
-print(confusion_matrix_2)
-
-print("coef: ", LogReg_2.coef_)
-print("intercept: ",LogReg_2.intercept_)
-'''
-
+outlier = []
+pos_no_outlier = pos.tolist()
+pos_max = np.amax(pos)
+neg_min = np.amin(neg)
+for mm in pos:
+    if(mm > neg_min):
+        outlier.append(mm)
+        pos_no_outlier.remove(mm)
+        
+pos_no_max = max(pos_no_outlier)
+#print(pos_no_max, neg_min)
+print("number of outliers", len(outlier))
+def plot_data():
+    plt.figure(figsize=(10,6))
+    plt.plot(pos,pos_y,'k+',label='Positive Sample')
+    plt.plot(neg,neg_y,'yo',label='Negative Sample')
+    plt.plot([threshold,threshold],[-1,2],'b-',label='Decision Boundary')
+    plt.axis([-.8,200,-1,3])
+    plt.xlabel('oga')
+    plt.ylabel('Gap')
+    plt.legend()
+    plt.grid(True)
+    
+plot_data()

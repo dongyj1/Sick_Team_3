@@ -19,6 +19,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
 import keras.backend as K
+import datetime
 
 def matthews_correlation(y_true, y_pred):
     """Matthews correlation metric.
@@ -137,12 +138,12 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 		agg.dropna(inplace=True)
 	return agg
 
-path = "/Users/xogoss/Documents/boston/CS542/project/Sick_Team_3-master/proagain" #文件夹目录  
+path = "./proagain" #文件夹目录  
 files= os.listdir(path)
 files = files[1:]
 s=[]
 for i in files:
-    k = read_csv('proagain/'+i, header=0, index_col=0)
+    k = read_csv('./proagain/'+i, header=0, index_col=0)
     s.append(k)
 dataset = pd.concat(s)
 
@@ -191,25 +192,30 @@ test_y = test[:, 30]
 train_X = train_X.reshape((train_X.shape[0], 1, train_X.shape[1]))
 test_X = test_X.reshape((test_X.shape[0], 1, test_X.shape[1]))
 print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
- 
+
+# test for parameters
+epoches = [2, 3, 4, 5]
+for epoch in epoches:
 # design network
-model = Sequential()
-model.add(LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2])))
-model.add(Dense(1))
-model.compile(loss='binary_crossentropy', optimizer='adam',metrics=[precision, recall, fmeasure])
-# fit network
-history = model.fit(train_X, train_y, epochs=50, batch_size=72, validation_data=(test_X, test_y), verbose=2, shuffle=False)
-# plot history
-pyplot.plot(history.history['loss'], label='train_loss')
-pyplot.plot(history.history['val_loss'], label='test_loss')
-pyplot.plot(history.history['fmeasure'], label='train_f1')
-pyplot.plot(history.history['val_fmeasure'], label='test_f1')
-pyplot.plot(history.history['precision'], label='train_p')
-pyplot.plot(history.history['val_precision'], label='test_p')
-pyplot.plot(history.history['recall'], label='train_r')
-pyplot.plot(history.history['val_recall'], label='test_r')
-pyplot.legend()
-pyplot.show()
+    model = Sequential()
+    model.add(LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2])))
+    model.add(Dense(1))
+    model.compile(loss='binary_crossentropy', optimizer='adam',metrics=[precision, recall, fmeasure])
+    # fit network
+    history = model.fit(train_X, train_y, epochs=epoch, batch_size=72, validation_data=(test_X, test_y), verbose=2, shuffle=False)
+    # plot history
+    pyplot.plot(history.history['loss'], label='train_loss')
+    pyplot.plot(history.history['val_loss'], label='test_loss')
+    pyplot.plot(history.history['fmeasure'], label='train_f1')
+    pyplot.plot(history.history['val_fmeasure'], label='test_f1')
+    pyplot.plot(history.history['precision'], label='train_p')
+    pyplot.plot(history.history['val_precision'], label='test_p')
+    pyplot.plot(history.history['recall'], label='train_r')
+    pyplot.plot(history.history['val_recall'], label='test_r')
+    pyplot.legend()
+    print('saving plots ...')
+    pyplot.savefig('runningPlots'+str(datetime.datetime.now())+'.png', bbox_inches="tight")
+# pyplot.show()
 ''' 
 # make a prediction
 yhat = model.predict(test_X)
