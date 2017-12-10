@@ -100,8 +100,11 @@ For keras:
 
 For Tensorflow, run these commands respectively :
 >conda create -n tensorflow python=3.6
+
 >activate tensorflow
+
 >pip install --ignore-installed --upgrade tensorflow 
+
 ##2. How to run our code
 1.For LFT Condition Exploration problem and Speed Attribute Evaluation, run:
 >python LSTM_modelF_withTimeInterval.py
