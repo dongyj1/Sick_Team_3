@@ -16,6 +16,7 @@ from sklearn.ensemble import RandomForestClassifier
 from datetime import datetime
 from sklearn.metrics import roc_curve, auc
 import time
+from sklearn.neural_network import MLPClassifier
 
 def transferTime(timestamp): 
     #to transfer timestamp to datetime type
@@ -106,15 +107,19 @@ def calculate_throughput(object_data,heart_data):
     idx = 0
     counter = 0
     for j in range(len(obj_time_data)):
-        #print("heart time" + str(heart_time_data.loc[idx,"timestamp"]))
-        #print("obj time" + str(obj_time_data.loc[j,"timestamp"]))
-        
-        if(int(obj_time_data.loc[j,"timestamp"]) <= int(heart_time_data.loc[idx,"timestamp"]) and int(obj_time_data.loc[j,"timestamp"]) > int(heart_time_data.loc[idx,"timestamp"])-60):
+        try:
+            #print("heart time" + str(heart_time_data.loc[idx,"timestamp"]))
+            #print("obj time" + str(obj_time_data.loc[j,"timestamp"]))
+            
+            if(int(obj_time_data.loc[j,"timestamp"]) <= int(heart_time_data.loc[idx,"timestamp"]) and int(obj_time_data.loc[j,"timestamp"]) > int(heart_time_data.loc[idx,"timestamp"])-60):
+                counter += 1
+            else:
+                heart_time_data.loc[idx,"throughput"] = counter
+                counter = 1
+                idx += 1
+        except:
             counter += 1
-        else:
-            heart_time_data.loc[idx,"throughput"] = counter
-            counter = 1
-            idx += 1
+    heart_time_data.loc[idx,"throughput"] = counter
     for i in range(len(heart_time_data)):
         if (str(heart_time_data.loc[i,"throughput"])  == "nan"):
             heart_time_data.loc[i,"throughput"] = 0
@@ -214,10 +219,11 @@ heart_filename = ["Heartbeat data/heartbeat7.4.csv",
 pileDf = pd.DataFrame()#inital dataframe
 allDf = pd.DataFrame()#inital dataframe
 datalist = [ 'oga' , 'seqnb' , 'Irreg' , 'MultiRead' , 'TooBig' , 'Gap']
-for file in filename:
+for i in range(len(filename)):
     try:
-        tmpDf = readDataTop(file, datalist)
-        
+        tmpDf = readDataTop(filename[i], datalist)
+        #calculate_throughput(filename[i],heart_filename[i])
+        print("processing " + str(filename[i]) + " and " + str(heart_filename[i]))
     except:
         pass
     findSideBySide(tmpDf)# sutract all the features we needs
@@ -225,13 +231,13 @@ for file in filename:
     pileDf = subtractFeature(tmpDf)
     addPileUpLabel(tmpDf,pileDf)
     allDf = allDf.append(tmpDf)
-
+    
 allDf = allDf.loc[: , [  'Irreg' , 'MultiRead' , 'TooBig' , 'pileUp']]
 
 
 
 #================================training==============================
-"""
+
 X = np.array(allDf.loc[: , [  'Irreg' , 'MultiRead' , 'TooBig' ]])
 y = np.array(allDf['pileUp'])
 #X[:,0]=X[:,0].astype(int)
@@ -246,22 +252,37 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 """
 #Ligistic Regression
 """
-clf_ligistic = linear_model.LogisticRegression(C=1e5)
+clf_ligistic = linear_model.LogisticRegression(C=100,solver = 'lbfgs')
+
 clf_ligistic.fit(X_train, y_train)
 accuracy = clf_ligistic.score(X_test, y_test)
 y_score = clf_ligistic.predict(X_test)
 print("f1 score of pridiction is ", f1_score(y_test,y_score,average = 'macro'))
-print('Ligistic Regression Score: ', accuracy)
+#print('Ligistic Regression Score: ', accuracy)
+print('Ligistic Regression param: ', clf_ligistic.get_params(deep=True))
 #n_classes = y.shape[1]
 
 """
-#Random Forest
+#SVM
 """
-clf_RF = RandomForestClassifier(n_jobs=2, random_state=0)
-clf_RF.fit(X_train, y_train)
-accuracy = clf_RF.score(X_test, y_test)
-y_score1 = clf_RF.predict(X_test)
+clf_SVM = svm.SVC(C = 2, gamma = 100)
+clf_SVM.fit(X_train, y_train)
+accuracy = clf_SVM.score(X_test, y_test)
+y_score1 = clf_SVM.predict(X_test)
 print("f1 score of pridiction is ", f1_score(y_test,y_score1,average = 'macro'))
-print('Random Forest Score', accuracy)
-print('This is the importances of different features: ',clf_RF.feature_importances_)
+#print('Random Forest Score', accuracy)
+#print('This is the importances of different features: ',clf_RF.feature_importances_)
+print('Random Forest param: ', clf_SVM.get_params(deep=True))
+
 """
+#MLP
+"""
+mlp = MLPClassifier(hidden_layer_sizes=(20,), max_iter=30, alpha=1e-4,
+                    solver='sgd', verbose=10, tol=1e-4, random_state=1,
+                    learning_rate_init=.1)
+mlp.fit(X_train, y_train)
+y_score1 = mlp.predict(X_test)
+print("f1 score of pridiction is ", f1_score(y_test,y_score1,average = 'macro'))
+#print('Random Forest Score', accuracy)
+#print('This is the importances of different features: ',clf_RF.feature_importances_)
+print('Random Forest param: ', mlp.get_params(deep=True))
