@@ -24,6 +24,9 @@ o	Recurring errors observed in the Heart Beat data section
 To sum up, We need to build a classification model which the output label is LFT and the input attributes are other condistions and information. We also need to figure out how to transfer package trends, 'Pileyp', 'Log Jam' to clear data.
 
 # 2. Related Work
+
+Since we need to evaluate the information behind the trend and build a classifier for LFT label, we first implement some classic classification algorithms such as logistic regression, SVM, MLP and random forest via scikit-learn. Also, for adding time series information of packages (packages trend information), we consider our classification problem as a time series problem with multiple input variables which we found some experience [here](https://machinelearningmastery.com/multivariate-time-series-forecasting-lstms-keras/). In the mean time, we also research some other algorithms for time series [老董把你马尔科夫放上去]. We also learn how to tune the LSTM hyperparameter in this [blog](https://machinelearningmastery.com/tune-lstm-hyperparameters-keras-time-series-forecasting/).
+
 # 3. Approach
 ## 3.1 LFT Condition Exploration
 
