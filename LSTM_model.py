@@ -164,7 +164,7 @@ reframed = series_to_supervised(scaled, n_in, n_out)
 
 
 reframed.head()
-reframed.drop(reframed.columns[[-2,-1]], axis=1, inplace=True) #drop some column I don't want to include
+reframed.drop(reframed.columns[[-5, -2,-1]], axis=1, inplace=True) #drop some column I don't want to include
 print(reframed.head())
 
 
@@ -178,7 +178,7 @@ train = values[:n_train_hours, :]
 test = values[n_train_hours:, :]
 
 # split into input and outputs
-input_col_index = -5
+input_col_index = -4
 X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
 train_X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
 train_y = train[:, input_col_index]
@@ -192,7 +192,7 @@ print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
  
 # design network
 neurons = 10
-epochs_number = 3
+epochs_number = 40
 b_number = 32
 model = Sequential()
 model.add(LSTM(neurons, input_shape=(train_X.shape[1], train_X.shape[2])))
@@ -206,11 +206,15 @@ history = model.fit(train_X, train_y, epochs=epochs_number, batch_size=b_number,
 image_name = str(n_in)+'days_'+str(neurons)+'n_'+str(b_number)+'b_'+str(epochs_number)+'e_'+'.png'
 pyplot.plot(history.history['loss'], label='train_loss')
 pyplot.plot(history.history['val_loss'], label='test_loss')
+pyplot.ylabel('loss')
+pyplot.xlabel('epoch')
 pyplot.legend()
 pyplot.savefig('./images/loss_' + image_name)
 pyplot.show()
 pyplot.plot(history.history['fmeasure'], label='train_f1')
 pyplot.plot(history.history['val_fmeasure'], label='test_f1')
+pyplot.ylabel('f1 score')
+pyplot.xlabel('epoch')
 pyplot.legend()
 pyplot.savefig('./images/f1_' + image_name)
 pyplot.show()
@@ -219,6 +223,8 @@ pyplot.plot(history.history['precision'], label='train_p')
 pyplot.plot(history.history['val_precision'], label='test_p')
 pyplot.plot(history.history['recall'], label='train_r')
 pyplot.plot(history.history['val_recall'], label='test_r')
+pyplot.ylabel('percentage')
+pyplot.xlabel('epoch')
 pyplot.legend()
 pyplot.savefig('./images/pr_' + image_name)
 pyplot.show()
