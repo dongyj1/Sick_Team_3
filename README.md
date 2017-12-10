@@ -37,7 +37,7 @@ For evaluating the belt speed over time, we firstly plot the time series to itui
   For outlier determination with gap information and timestamp, after plotting all the relevant data it is shown that the Gap condition is determined only by “oga” and objects with negative "oga" should be outliers.
    To get the boundary for Gap information specific, we implemented Logistic Regression and Robust linear model. 
    First, to get the relation between "oga" information and each adjacent objects' time interval, we use Robust linear model to fit the data. The input of Robust model is [x = array(time interval information) , y = array("oga")] and the output is co-efficiency of these two variables. The result intends that it is not necessary to consider both time interval and "oga" for "Gap" investigation.
-   After plotting the "oga" and it's "Gap" condition, it is clearly separated into two parts along "oga" value. So we used logistic regression to implement. The input of logistic regression is “oga” without negative “oga” objects, which is split using cross_validation.train_test_split() function imported from Sklearn. And the output of this model is the linear relation and the boundary of data.
+   After plotting the "oga" and it's "Gap" condition, it is clearly separated into two parts along "oga" value. So we used SVM module to implement it. The input of SVM module is “oga” without negative data, which is split using cross_validation.train_test_split() function imported from Sklearn. The kernel of SVM is "linear" and it specifies the epsilon-tube within which no penalty is associated in the training loss function with points predicted within a distance epsilon from the actual value. The output of this model is the classification. We calculate the threshold from the module by "threshold = (-clf.intercept_/clf.coef_).flatten()[0]". For all the objects with "Gap" but not in the classification result, we call them detectived outliers.
 ## 3.4 "Pipe Up" & "Log Jap"
 Since there is no "Pile Up" & "Log Jam" label in the data, we need to identify "Pile Up" & "Log Jam" situation first. The gap between each package would be the main criteria to identify "Pile Up" & "Log Jam" situation. From gap information we know when gap is smaller than -1000, it is equal to "side by side" condition, so we would say all the packages whose gap is smaller than -1000 have "Pile Up" & "Log Jam" situation. Moreover, if "Gap" condition appears in package data, it means the gap distance between packages is smaller than 15 inches. So if "Gap" condition appears continuously, we would say those packages with "Gap" condition are in "Pile Up" & "Log Jam" situation.
 
@@ -64,8 +64,10 @@ Hyper-parameter: C = 2, $\gamma = 100$ where $\gamma = 2\sigma^{-2}$
 ## 3.5 Outlier Detection
 ###3.5.1 Unit outlier
 There are not many unit outliers in the dataset. For all the units, only speed_unit, otl_unit, oga_unit, size_unit, obv_unit and orv_unit has randomly changed for 895 times. And furthermore, all these units changed at the same time for a object observation. They are all showing randomly in the data sets. Although the units are changed, the value changed correspondingly, so the final results won't be affected.
-  
-    
+
+###3.5.3 Recurring errors in the Heart Beat data
+Recurring errors can be defined as same error occured on each device. In order to count the number of each device's error, we checked each heartbeat file and get the number of all relative data for 6 devices. As a result, device 5 had lowest error occur while others were similar.
+  
 # 4. Dataset and Metric
 Our dataset is provided in XML format which includes two kinds of information object data and heartbeat data. Object data corresponds to information collected from every single package through the camera. Heartbeat data refers to the state of the sensor system. We extracted original data from XML files into several CSV files. In the XML file, each object and heartbeat is stored as an element tree. We implemented DFS algorithm to traverse each root’s children and extracted useful data into a dictionary. As a result, for each XML file, the valid data is stored in two CSV files, one is for object data and the other is for heartbeat data.
 
@@ -75,7 +77,7 @@ Our dataset is provided in XML format which includes two kinds of information ob
 ## 6.1 LFT Condition Exploration
 ## 6.2 Speed Attribute Evaluation
 ## 6.3 Gap detection
-For outlier determination with Gap and correlative with timestamp, it is shown that the relation about oga(gap information) and time interval for each object is clearly linear. And the boundary of oga which is used to determine Gap condition is about 15.
+For outlier determination with Gap and correlative with timestamp, it is shown that the relation about oga(gap information) and time interval for each object is clearly linear. And the boundary of oga which is used to determine Gap condition is 15.12967427. It is caculated by the coef_ and intercept_ of SVM module.
 ## 6.4 "Pipe Up" & "Log Jap"
 # 7. Roles
 
