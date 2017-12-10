@@ -65,10 +65,10 @@ where: ![SVM_gauss](http://latex.codecogs.com/gif.latex?f%5E%7Bi%7D%20%3D%20exp%
 Hyper-parameter: C = 2, ![gamma_value](http://latex.codecogs.com/gif.latex?%5Cgamma%20%3D%20100) where ![gamma_sigma](http://latex.codecogs.com/gif.latex?%5Cgamma%20%3D%202%5Csigma%5E%7B-2%7D)
 
 ## 3.5 Outlier Detection
-###3.5.1 Unit outlier
+### 3.5.1 Unit outlier
 There are not many unit outliers in the dataset. For all the units, only speed_unit, otl_unit, oga_unit, size_unit, obv_unit and orv_unit has randomly changed for 895 times. And furthermore, all these units changed at the same time for a object observation. They are all showing randomly in the data sets. Although the units are changed, the value changed correspondingly, so the final results won't be affected.
 
-###3.5.3 Recurring errors in the Heart Beat data
+### 3.5.3 Recurring errors in the Heart Beat data
 Recurring errors can be defined as same error occured on each device. In order to count the number of each device's error, we checked each heartbeat file and get the number of all relative data for 6 devices. As a result, device 5 had lowest error occur while others were similar.
   
 # 4. Dataset and Metric
@@ -83,9 +83,10 @@ Our dataset is provided in XML format which includes two kinds of information ob
 For outlier determination with Gap and correlative with timestamp, it is shown that the relation about oga(gap information) and time interval for each object is clearly linear. And the boundary of oga which is used to determine Gap condition is 15.12967427. It is caculated by the coef_ and intercept_ of SVM module.
 ## 6.4 "Pile Up" & "Log Jam"
 # 7. Roles
-#8.How to run the code
 
-##1. environment requirment
+# 8.How to run the code
+
+## 1. environment requirment
 python 3.6.2, keras 2.0.6, numpy, pandas, matplotlib, scikit-learn, tensorflow r1.4 cpu version are required
 
 We recommend you use anaconda to install those packages, please run following commands in your anaconda prompt in Windows(terminal in macOS/Linux):
@@ -105,7 +106,7 @@ For Tensorflow, run these commands respectively :
 
 >pip install --ignore-installed --upgrade tensorflow 
 
-##2. How to run our code
+## 2. How to run our code
 1.For LFT Condition Exploration problem and Speed Attribute Evaluation, run:
 >python LSTM_modelF_withTimeInterval.py
 
