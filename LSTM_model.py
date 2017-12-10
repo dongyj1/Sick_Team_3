@@ -137,12 +137,12 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 		agg.dropna(inplace=True)
 	return agg
 
-path = "/Volumes/Python&Dragon/-Exploring-Hidden-Value--master/processed" #文件夹目录  
+path = "./processed" #文件夹目录  
 files= os.listdir(path)
 files = files[1:]
 s=[]
 for i in files:
-    k = read_csv('processed/'+i, header=0, index_col=0)
+    k = read_csv('./processed/'+i, header=0, index_col=0)
     s.append(k)
 dataset = pd.concat(s)
 
@@ -157,11 +157,14 @@ values = values.astype('float32')
 #Normalize the data
 scaler = MinMaxScaler(feature_range=(0, 1))
 scaled = scaler.fit_transform(values)
-# frame as supervised learning
-reframed = series_to_supervised(scaled, 1, 1)
+
+n_in = 10
+n_out = 1
+reframed = series_to_supervised(scaled, n_in, n_out)
+
 
 reframed.head()
-reframed.drop(reframed.columns[[34,35]], axis=1, inplace=True) #drop some column I don't want to include
+reframed.drop(reframed.columns[[-2,-1]], axis=1, inplace=True) #drop some column I don't want to include
 print(reframed.head())
 
 
@@ -173,12 +176,14 @@ values = reframed.values
 n_train_hours = -50000
 train = values[:n_train_hours, :]
 test = values[n_train_hours:, :]
+
 # split into input and outputs
-X = np.concatenate((train[:,:29], train[:,30:]), axis=1)
-train_X = np.concatenate((train[:,:29], train[:,30:]), axis=1)
-train_y = train[:, 29]
-test_X = np.concatenate((test[:,:29], test[:,30:]), axis=1)
-test_y = test[:, 29]
+input_col_index = -5
+X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
+train_X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
+train_y = train[:, input_col_index]
+test_X = np.concatenate((test[:,:input_col_index], test[:,input_col_index+1:]), axis=1)
+test_y = test[:, input_col_index]
 
 # reshape input to be 3D [samples, timesteps, features]
 train_X = train_X.reshape((train_X.shape[0], 1, train_X.shape[1]))
@@ -186,40 +191,36 @@ test_X = test_X.reshape((test_X.shape[0], 1, test_X.shape[1]))
 print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
  
 # design network
+neurons = 10
+epochs_number = 50
+b_number = 32
 model = Sequential()
-model.add(LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2])))
+model.add(LSTM(neurons, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(1))
 model.compile(loss='binary_crossentropy', optimizer='adam',metrics=[precision, recall, fmeasure])
+
 # fit network
-history = model.fit(train_X, train_y, epochs=50, batch_size=72, validation_data=(test_X, test_y), verbose=2, shuffle=False)
+history = model.fit(train_X, train_y, epochs=epochs_number, batch_size=b_number, validation_data=(test_X, test_y), verbose=2, shuffle=False)
+
 # plot history
+image_name = str(n_in)+'days_'+str(neurons)+'n_'+str(b_number)+'b_'+str(epochs_number)+'e_'+'.png'
 pyplot.plot(history.history['loss'], label='train_loss')
 pyplot.plot(history.history['val_loss'], label='test_loss')
+pyplot.legend()
+pyplot.savefig('./images/loss_' + image_name)
+pyplot.show()
 pyplot.plot(history.history['fmeasure'], label='train_f1')
 pyplot.plot(history.history['val_fmeasure'], label='test_f1')
+pyplot.legend()
+pyplot.savefig('./images/f1_' + image_name)
+pyplot.show()
+
 pyplot.plot(history.history['precision'], label='train_p')
 pyplot.plot(history.history['val_precision'], label='test_p')
 pyplot.plot(history.history['recall'], label='train_r')
 pyplot.plot(history.history['val_recall'], label='test_r')
 pyplot.legend()
+pyplot.savefig('./images/pr_' + image_name)
 pyplot.show()
-''' 
-# make a prediction
-yhat = model.predict(test_X)
-test_X = test_X.reshape((test_X.shape[0], test_X.shape[2]))
-# invert scaling for forecast
-inv_yhat = concatenate((yhat, test_X[:, 1:]), axis=1)
-print('inv_hat shape', inv_yhat.shape)
-inv_yhat = scaler.inverse_transform(inv_yhat)
-inv_yhat = inv_yhat[:,0]
-# invert scaling for actual
-test_y = test_y.reshape((len(test_y), 1))
-inv_y = concatenate((test_y, test_X[:, 1:]), axis=1)
-inv_y = scaler.inverse_transform(inv_y)
-inv_y = inv_y[:,0]
-# calculate RMSE
-rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
-print('Test RMSE: %.3f' % rmse)
-'''
 
 
