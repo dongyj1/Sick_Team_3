@@ -115,6 +115,7 @@ def fmeasure(y_true, y_pred):
     """
     return fbeta_score(y_true, y_pred, beta=1)
 
+
 def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 	n_vars = 1 if type(data) is list else data.shape[1]
 	df = DataFrame(data)
@@ -163,13 +164,16 @@ values = values.astype('float32')
 #Normalize the data
 scaler = MinMaxScaler(feature_range=(0, 1))
 scaled = scaler.fit_transform(values)
+
 # frame as supervised learning
-reframed = series_to_supervised(scaled, 1, 1)
+n_in = 10
+n_out = 1
+reframed = series_to_supervised(scaled, n_in, n_out)
 
 reframed.head()
 print(reframed.head(0))
 print("=============================")
-reframed.drop(reframed.columns[[35, 36]], axis=1, inplace=True) #drop some column I don't want to include
+reframed.drop(reframed.columns[[-3, -2]], axis=1, inplace=True) #drop some column I don't want to include
 print(reframed.head(2))
 
 
@@ -181,12 +185,14 @@ values = reframed.values
 n_train_hours = -50000
 train = values[:n_train_hours, :]
 test = values[n_train_hours:, :]
+
 # split into input and outputs
-X = np.concatenate((train[:,:30], train[:,31:]), axis=1)
-train_X = np.concatenate((train[:,:30], train[:,31:]), axis=1)
-train_y = train[:, 30]
-test_X = np.concatenate((test[:,:30], test[:,31:]), axis=1)
-test_y = test[:, 30]
+input_col_index = -6
+X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
+train_X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
+train_y = train[:, input_col_index]
+test_X = np.concatenate((test[:,:input_col_index], test[:,input_col_index+1:]), axis=1)
+test_y = test[:, input_col_index]
 
 # reshape input to be 3D [samples, timesteps, features]
 train_X = train_X.reshape((train_X.shape[0], 1, train_X.shape[1]))
@@ -194,27 +200,35 @@ test_X = test_X.reshape((test_X.shape[0], 1, test_X.shape[1]))
 print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
 
 # test for parameters
-epoches = [2, 3, 4, 5]
-for epoch in epoches:
-# design network
-    model = Sequential()
-    model.add(LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2])))
-    model.add(Dense(1))
-    model.compile(loss='binary_crossentropy', optimizer='adam',metrics=[precision, recall, fmeasure])
-    # fit network
-    history = model.fit(train_X, train_y, epochs=epoch, batch_size=72, validation_data=(test_X, test_y), verbose=2, shuffle=False)
-    # plot history
-    pyplot.plot(history.history['loss'], label='train_loss')
-    pyplot.plot(history.history['val_loss'], label='test_loss')
-    pyplot.plot(history.history['fmeasure'], label='train_f1')
-    pyplot.plot(history.history['val_fmeasure'], label='test_f1')
-    pyplot.plot(history.history['precision'], label='train_p')
-    pyplot.plot(history.history['val_precision'], label='test_p')
-    pyplot.plot(history.history['recall'], label='train_r')
-    pyplot.plot(history.history['val_recall'], label='test_r')
-    pyplot.legend()
-    print('saving plots ...')
-    pyplot.savefig('runningPlots'+str(datetime.datetime.now())+'.png', bbox_inches="tight")
+neurons = 10
+epochs_number = 3
+b_number = 32
+model = Sequential()
+model.add(LSTM(neurons, input_shape=(train_X.shape[1], train_X.shape[2])))
+model.add(Dense(1))
+model.compile(loss='binary_crossentropy', optimizer='adam',metrics=[precision, recall, fmeasure])
+# fit network
+history = model.fit(train_X, train_y, epochs=epochs_number, batch_size=b_number, validation_data=(test_X, test_y), verbose=2, shuffle=False)
+# plot history
+image_name = 't_'+str(n_in)+'days_'+str(neurons)+'n_'+str(b_number)+'b_'+str(epochs_number)+'e_'+'.png'
+pyplot.plot(history.history['loss'], label='train_loss')
+pyplot.plot(history.history['val_loss'], label='test_loss')
+pyplot.legend()
+pyplot.savefig('./images/loss_' + image_name)
+pyplot.show()
+pyplot.plot(history.history['fmeasure'], label='train_f1')
+pyplot.plot(history.history['val_fmeasure'], label='test_f1')
+pyplot.legend()
+pyplot.savefig('./images/f1_' + image_name)
+pyplot.show()
+
+pyplot.plot(history.history['precision'], label='train_p')
+pyplot.plot(history.history['val_precision'], label='test_p')
+pyplot.plot(history.history['recall'], label='train_r')
+pyplot.plot(history.history['val_recall'], label='test_r')
+pyplot.legend()
+pyplot.savefig('./images/pr_' + image_name)
+pyplot.show()
 # pyplot.show()
 ''' 
 # make a prediction

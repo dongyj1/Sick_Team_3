@@ -192,7 +192,7 @@ print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
  
 # design network
 neurons = 10
-epochs_number = 50
+epochs_number = 3
 b_number = 32
 model = Sequential()
 model.add(LSTM(neurons, input_shape=(train_X.shape[1], train_X.shape[2])))
