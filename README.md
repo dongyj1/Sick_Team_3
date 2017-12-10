@@ -48,21 +48,21 @@ the input of the model is all the “Irreg”, “MultiRead”, “TooBig” con
 
 In logistic regression and MLP, we use Relu as activation function and the loss function is:
 
-$L(\theta) = -\frac{1}{m}[\sum^m_{i = 1}y^{(i)}log h_\theta(x^{(i)}) + (1-y)^{(i)}log (1 - h_\theta(x^{(i)}))]$
+![logistic_regression_loss](http://latex.codecogs.com/gif.latex?L%28%5Ctheta%29%20%3D%20-%5Cfrac%7B1%7D%7Bm%7D%5B%5Csum%5Em_%7Bi%20%3D%201%7Dy%5E%7B%28i%29%7Dlog%20h_%5Ctheta%28x%5E%7B%28i%29%7D%29%20&plus;%20%281-y%29%5E%7B%28i%29%7Dlog%20%281%20-%20h_%5Ctheta%28x%5E%7B%28i%29%7D%29%29%5D)
 
-where: $h_\theta(x) = log(1 + exp(x))$ is the activation function,x is input and y is output.
+where: ![logistic_regression_hype](http://latex.codecogs.com/gif.latex?h_%5Ctheta%28x%29%20%3D%20log%281%20&plus;%20exp%28x%29%29) is the activation function,x is input and y is output.
 
 Hyper-parameter:
-For logistic regression $\lambda$ = 10,  L2 regularization
-For MLP $\alpha$ = 0.0001, $\lambda$ = 10,  L2 regularization, hidden_layer_sizes = (20, 4)
+For logistic regression ![lambda](http://latex.codecogs.com/gif.latex?%5Clambda) = 10,  L2 regularization
+For MLP ![alpha](http://latex.codecogs.com/gif.latex?%5Calpha) = 0.0001, ![lambda](http://latex.codecogs.com/gif.latex?%5Clambda) = 10,  L2 regularization, hidden_layer_sizes = (20, 4)
 
 In SVM with RBF kernel, the loss function is:
 
-$L(\theta) =C[\sum^m_{i = 1}y^{(i)}cost_1(\theta^Tf^{(i)}) + (1-y)^{(i)}cost_0(\theta^Tf^{(i)})] + \frac{1}{2}\sum^n_{j = 1}\theta^2_j$
+![SVM_loss](http://latex.codecogs.com/gif.latex?L%28%5Ctheta%29%20%3DC%5B%5Csum%5Em_%7Bi%20%3D%201%7Dy%5E%7B%28i%29%7Dcost_1%28%5Ctheta%5ETf%5E%7B%28i%29%7D%29%20&plus;%20%281-y%29%5E%7B%28i%29%7Dcost_0%28%5Ctheta%5ETf%5E%7B%28i%29%7D%29%5D%20&plus;%20%5Cfrac%7B1%7D%7B2%7D%5Csum%5En_%7Bj%20%3D%201%7D%5Ctheta%5E2_j)
 
-where: $f^{i} = exp(-\frac{||x-x^{(i)}||^2}{2\sigma^2})$ for guass kernel, 
+where: ![SVM_gauss](http://latex.codecogs.com/gif.latex?f%5E%7Bi%7D%20%3D%20exp%28-%5Cfrac%7B%7C%7Cx-x%5E%7B%28i%29%7D%7C%7C%5E2%7D%7B2%5Csigma%5E2%7D%29) for gauss kernel, 
 
-Hyper-parameter: C = 2, $\gamma = 100$ where $\gamma = 2\sigma^{-2}$
+Hyper-parameter: C = 2, ![gamma_value](http://latex.codecogs.com/gif.latex?%5Cgamma%20%3D%20100) where ![gamma_sigma](http://latex.codecogs.com/gif.latex?%5Cgamma%20%3D%202%5Csigma%5E%7B-2%7D)
 
 ## 3.5 Outlier Detection
 ###3.5.1 Unit outlier
