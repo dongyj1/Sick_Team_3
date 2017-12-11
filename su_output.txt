@@ -1,0 +1,109 @@
+Script started on Mon 11 Dec 2017 08:22:19 AM UTC
+Using TensorFlow backend.
+/home/stevenfooxx/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+   var1(t-1)  var2(t-1)  var3(t-1)  var4(t-1)  var5(t-1)  var6(t-1)  \
+1   0.499630   0.155844   0.232919   0.395480   0.497222   0.035070   
+2   0.005500   0.038095   0.077640   0.084746   0.487778   0.000612   
+3   0.499630   0.097835   0.270186   0.429379   0.485000   0.027727   
+4   0.606917   0.064069   0.220497   0.192090   0.482222   0.006629   
+5   0.802658   0.083117   0.223602   0.158192   0.476111   0.007182   
+
+   var7(t-1)  var8(t-1)  var9(t-1)  var10(t-1)    ...      var6(t)   var7(t)  \
+1   0.704897   0.970720   0.134454         0.0    ...     0.000612  0.694748   
+2   0.694748   0.970720   0.014406         0.0    ...     0.027727  0.700837   
+3   0.700837   0.967191   0.095438         0.0    ...     0.006629  0.700837   
+4   0.700837   0.967191   0.030012         0.0    ...     0.007182  0.704136   
+5   0.704136   0.967191   0.025210         0.0    ...     0.018001  0.707688   
+
+    var8(t)   var9(t)  var10(t)  var11(t)  var12(t)  var13(t)  var15(t)  \
+1  0.970720  0.014406       0.0       0.0       1.0       0.0       0.0   
+2  0.967191  0.095438       0.0       1.0       1.0       0.0       0.0   
+3  0.967191  0.030012       0.0       0.0       1.0       0.0       0.0   
+4  0.967191  0.025210       0.0       0.0       1.0       0.0       0.0   
+5  0.967191  0.291717       0.0       1.0       1.0       0.0       0.0   
+
+   var16(t)  
+1       0.0  
+2       0.0  
+3       0.0  
+4       0.0  
+5       0.0  
+
+[5 rows x 33 columns]
+(1457803, 1, 32) (1457803,) (50000, 1, 32) (50000,)
+Train on 1457803 samples, validate on 50000 samples
+Epoch 1/10
+2017-12-11 08:22:28.189224: I tensorflow/core/platform/cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+ - 48s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+Epoch 2/10
+ - 48s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+Epoch 3/10
+ - 48s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+Epoch 4/10
+ - 55s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+Epoch 5/10
+ - 48s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+Epoch 6/10
+ - 48s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+Epoch 7/10
+ - 48s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+Epoch 8/10
+ - 48s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+Epoch 9/10
+ - 48s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+Epoch 10/10
+ - 48s - loss: 15.0166 - precision: 0.0000e+00 - recall: 0.0000e+00 - fmeasure: 0.0000e+00 - val_loss: 15.1291 - val_precision: 0.0000e+00 - val_recall: 0.0000e+00 - val_fmeasure: 0.0000e+00
+    var1(t-10)  var2(t-10)  var3(t-10)  var4(t-10)  var5(t-10)  var6(t-10)  \
+10    0.499630    0.155844    0.232919    0.395480    0.497222    0.035070   
+11    0.005500    0.038095    0.077640    0.084746    0.487778    0.000612   
+12    0.499630    0.097835    0.270186    0.429379    0.485000    0.027727   
+13    0.606917    0.064069    0.220497    0.192090    0.482222    0.006629   
+14    0.802658    0.083117    0.223602    0.158192    0.476111    0.007182   
+
+    var7(t-10)  var8(t-10)  var9(t-10)  var10(t-10)    ...      var6(t)  \
+10    0.704897    0.970720    0.134454          0.0    ...     0.014979   
+11    0.694748    0.970720    0.014406          0.0    ...     0.018968   
+12    0.700837    0.967191    0.095438          0.0    ...     0.011144   
+13    0.700837    0.967191    0.030012          0.0    ...     0.008884   
+14    0.704136    0.967191    0.025210          0.0    ...     0.004052   
+
+     var7(t)   var8(t)   var9(t)  var10(t)  var11(t)  var12(t)  var13(t)  \
+10  0.698807  0.967191  0.060024       0.0       1.0       1.0       0.0   
+11  0.699569  0.967191  0.079232       0.0       0.0       1.0       0.0   
+12  0.698046  0.967191  0.077431       0.0       0.0       1.0       0.0   
+13  0.698046  0.967191  0.032413       0.0       0.0       1.0       0.0   
+14  0.699569  0.967191  0.015006       0.0       0.0       1.0       0.0   
+
+    var15(t)  var16(t)  
+10       0.0       0.0  
+11       0.0       0.0  
+12       0.0       0.0  
+13       0.0       0.0  
+14       0.0       0.0  
+
+[5 rows x 195 columns]
+(1457794, 1, 194) (1457794,) (50000, 1, 194) (50000,)
+Train on 1457794 samples, validate on 50000 samples
+Epoch 1/10
+ - 56s - loss: 0.2117 - precision: 0.9444 - recall: 0.9964 - fmeasure: 0.9687 - val_loss: 0.2996 - val_precision: 0.9520 - val_recall: 1.0000 - val_fmeasure: 0.9750
+Epoch 2/10
+ - 55s - loss: 0.1860 - precision: 0.9491 - recall: 0.9998 - fmeasure: 0.9733 - val_loss: 0.1813 - val_precision: 0.9520 - val_recall: 1.0000 - val_fmeasure: 0.9750
+Epoch 3/10
+ - 55s - loss: 0.1829 - precision: 0.9491 - recall: 0.9996 - fmeasure: 0.9732 - val_loss: 0.1771 - val_precision: 0.9520 - val_recall: 1.0000 - val_fmeasure: 0.9750
+Epoch 4/10
+ - 55s - loss: 0.1809 - precision: 0.9493 - recall: 0.9996 - fmeasure: 0.9733 - val_loss: 0.1755 - val_precision: 0.9521 - val_recall: 1.0000 - val_fmeasure: 0.9751
+Epoch 5/10
+ - 55s - loss: 0.1782 - precision: 0.9496 - recall: 0.9995 - fmeasure: 0.9734 - val_loss: 0.1745 - val_precision: 0.9523 - val_recall: 0.9999 - val_fmeasure: 0.9752
+Epoch 6/10
+ - 56s - loss: 0.1781 - precision: 0.9497 - recall: 0.9994 - fmeasure: 0.9734 - val_loss: 0.1753 - val_precision: 0.9524 - val_recall: 0.9999 - val_fmeasure: 0.9752
+Epoch 7/10
+ - 55s - loss: 0.1776 - precision: 0.9497 - recall: 0.9994 - fmeasure: 0.9735 - val_loss: 0.1740 - val_precision: 0.9524 - val_recall: 1.0000 - val_fmeasure: 0.9752
+Epoch 8/10
+ - 55s - loss: 0.1778 - precision: 0.9497 - recall: 0.9996 - fmeasure: 0.9735 - val_loss: 0.1730 - val_precision: 0.9524 - val_recall: 0.9999 - val_fmeasure: 0.9752
+Epoch 9/10
+ - 55s - loss: 0.1769 - precision: 0.9498 - recall: 0.9994 - fmeasure: 0.9735 - val_loss: 0.1741 - val_precision: 0.9524 - val_recall: 0.9999 - val_fmeasure: 0.9752
+Epoch 10/10
+ - 55s - loss: 0.1775 - precision: 0.9498 - recall: 0.9995 - fmeasure: 0.9735 - val_loss: 0.1741 - val_precision: 0.9524 - val_recall: 1.0000 - val_fmeasure: 0.9753
+
+Script done on Mon 11 Dec 2017 08:39:56 AM UTC
