@@ -160,47 +160,51 @@ values = values.astype('float32')
 scaler = MinMaxScaler(feature_range=(0, 1))
 scaled = scaler.fit_transform(values)
 
-# n_in = 10
-n_out = 1
-reframed = series_to_supervised(scaled, n_in, n_out)
-
-
-reframed.head()
-reframed.drop(reframed.columns[[-5, -2,-1]], axis=1, inplace=True) #drop some column I don't want to include
-print(reframed.head())
-
-
-#split train and test
-values = reframed.values
-#X = np.concatenate((values[:,:29],values[:,30:]),axis=1)
-#y = values[:,29]
-#train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.05)
-n_train_hours = -50000
-train = values[:n_train_hours, :]
-test = values[n_train_hours:, :]
-
-# split into input and outputs
-input_col_index = -4
-X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
-train_X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
-train_y = train[:, input_col_index]
-test_X = np.concatenate((test[:,:input_col_index], test[:,input_col_index+1:]), axis=1)
-test_y = test[:, input_col_index]
-
-# reshape input to be 3D [samples, timesteps, features]
-train_X = train_X.reshape((train_X.shape[0], 1, train_X.shape[1]))
-test_X = test_X.reshape((test_X.shape[0], 1, test_X.shape[1]))
-print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
- 
-# design network
 epochs_numbers = [10,10,50,10,10]
 neuronss =       [5, 10,10,10,10]
 b_numbers =      [32,32,32,64,64]
 n_ins =          [1, 1, 1, 1, 10]
 
-for i in range(3):
+for i in range(len(n_ins)):
+    n_in = n_ins[i]
+    # n_in = 10
+    n_out = 1
+    reframed = series_to_supervised(scaled, n_in, n_out)
+
+
+    reframed.head()
+    reframed.drop(reframed.columns[[-5, -2,-1]], axis=1, inplace=True) #drop some column I don't want to include
+    print(reframed.head())
+
+
+    #split train and test
+    values = reframed.values
+    #X = np.concatenate((values[:,:29],values[:,30:]),axis=1)
+    #y = values[:,29]
+    #train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.05)
+    n_train_hours = -50000
+    train = values[:n_train_hours, :]
+    test = values[n_train_hours:, :]
+
+    # split into input and outputs
+    input_col_index = -4
+    X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
+    train_X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
+    train_y = train[:, input_col_index]
+    test_X = np.concatenate((test[:,:input_col_index], test[:,input_col_index+1:]), axis=1)
+    test_y = test[:, input_col_index]
+
+    # reshape input to be 3D [samples, timesteps, features]
+    train_X = train_X.reshape((train_X.shape[0], 1, train_X.shape[1]))
+    test_X = test_X.reshape((test_X.shape[0], 1, test_X.shape[1]))
+    print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
+     
+    # design network
+
     neurons = neuronss[i]
     epochs_number = epochs_numbers[i]
+    b_number = b_numbers[i]
+    n_in = n_ins[i]
     model = Sequential()
     model.add(LSTM(neurons, input_shape=(train_X.shape[1], train_X.shape[2])))
     model.add(Dense(1))
