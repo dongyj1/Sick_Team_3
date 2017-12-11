@@ -191,42 +191,45 @@ test_X = test_X.reshape((test_X.shape[0], 1, test_X.shape[1]))
 print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
  
 # design network
-neurons = 10
-epochs_number = 40
+neuronss = [10,10,50]
+epochs_numbers = [5,10,10]
 b_number = 32
-model = Sequential()
-model.add(LSTM(neurons, input_shape=(train_X.shape[1], train_X.shape[2])))
-model.add(Dense(1))
-model.compile(loss='binary_crossentropy', optimizer='adam',metrics=[precision, recall, fmeasure])
+for i in range(3):
+    neurons = neuronss[i]
+    epochs_number = epochs_numbers[i]
+    model = Sequential()
+    model.add(LSTM(neurons, input_shape=(train_X.shape[1], train_X.shape[2])))
+    model.add(Dense(1))
+    model.compile(loss='binary_crossentropy', optimizer='adam',metrics=[precision, recall, fmeasure])
 
-# fit network
-history = model.fit(train_X, train_y, epochs=epochs_number, batch_size=b_number, validation_data=(test_X, test_y), verbose=2, shuffle=False)
+    # fit network
+    history = model.fit(train_X, train_y, epochs=epochs_number, batch_size=b_number, validation_data=(test_X, test_y), verbose=2, shuffle=False)
 
-# plot history
-image_name = str(n_in)+'days_'+str(neurons)+'n_'+str(b_number)+'b_'+str(epochs_number)+'e_'+'.png'
-pyplot.plot(history.history['loss'], label='train_loss')
-pyplot.plot(history.history['val_loss'], label='test_loss')
-pyplot.ylabel('loss')
-pyplot.xlabel('epoch')
-pyplot.legend()
-pyplot.savefig('./images/loss_' + image_name)
-pyplot.show()
-pyplot.plot(history.history['fmeasure'], label='train_f1')
-pyplot.plot(history.history['val_fmeasure'], label='test_f1')
-pyplot.ylabel('f1 score')
-pyplot.xlabel('epoch')
-pyplot.legend()
-pyplot.savefig('./images/f1_' + image_name)
-pyplot.show()
+    # plot history
+    image_name = str(n_in)+'days_'+str(neurons)+'n_'+str(b_number)+'b_'+str(epochs_number)+'e_'+'.png'
+    pyplot.plot(history.history['loss'], label='train_loss')
+    pyplot.plot(history.history['val_loss'], label='test_loss')
+    pyplot.ylabel('loss')
+    pyplot.xlabel('epoch')
+    pyplot.legend()
+    pyplot.savefig('./images/loss_' + image_name)
+    pyplot.show()
+    pyplot.plot(history.history['fmeasure'], label='train_f1')
+    pyplot.plot(history.history['val_fmeasure'], label='test_f1')
+    pyplot.ylabel('f1 score')
+    pyplot.xlabel('epoch')
+    pyplot.legend()
+    pyplot.savefig('./images/f1_' + image_name)
+    pyplot.show()
 
-pyplot.plot(history.history['precision'], label='train_p')
-pyplot.plot(history.history['val_precision'], label='test_p')
-pyplot.plot(history.history['recall'], label='train_r')
-pyplot.plot(history.history['val_recall'], label='test_r')
-pyplot.ylabel('percentage')
-pyplot.xlabel('epoch')
-pyplot.legend()
-pyplot.savefig('./images/pr_' + image_name)
-pyplot.show()
+    pyplot.plot(history.history['precision'], label='train_p')
+    pyplot.plot(history.history['val_precision'], label='test_p')
+    pyplot.plot(history.history['recall'], label='train_r')
+    pyplot.plot(history.history['val_recall'], label='test_r')
+    pyplot.ylabel('percentage')
+    pyplot.xlabel('epoch')
+    pyplot.legend()
+    pyplot.savefig('./images/pr_' + image_name)
+    # pyplot.show()
 
 
