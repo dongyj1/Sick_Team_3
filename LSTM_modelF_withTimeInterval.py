@@ -8,6 +8,8 @@ Created on Wed Nov  8 15:43:10 2017
 
 
 import numpy as np
+import matplotlib
+matplotlib.use('agg')
 from matplotlib import pyplot
 import pandas as pd
 import os
@@ -173,7 +175,7 @@ reframed = series_to_supervised(scaled, n_in, n_out)
 reframed.head()
 print(reframed.head(0))
 print("=============================")
-reframed.drop(reframed.columns[[-3, -2]], axis=1, inplace=True) #drop some column I don't want to include
+reframed.drop(reframed.columns[[-6,-3, -2]], axis=1, inplace=True) #drop some column I don't want to include
 print(reframed.head(2))
 
 
@@ -187,7 +189,7 @@ train = values[:n_train_hours, :]
 test = values[n_train_hours:, :]
 
 # split into input and outputs
-input_col_index = -6
+input_col_index = -5
 X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
 train_X = np.concatenate((train[:,:input_col_index], train[:,input_col_index+1:]), axis=1)
 train_y = train[:, input_col_index]
