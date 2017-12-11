@@ -160,7 +160,7 @@ values = values.astype('float32')
 scaler = MinMaxScaler(feature_range=(0, 1))
 scaled = scaler.fit_transform(values)
 
-n_in = 10
+# n_in = 10
 n_out = 1
 reframed = series_to_supervised(scaled, n_in, n_out)
 
@@ -193,9 +193,11 @@ test_X = test_X.reshape((test_X.shape[0], 1, test_X.shape[1]))
 print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
  
 # design network
-neuronss = [10,10,50]
-epochs_numbers = [5,10,10]
-b_number = 32
+epochs_numbers = [10,10,50,10,10]
+neuronss =       [5, 10,10,10,10]
+b_numbers =      [32,32,32,64,64]
+n_ins =          [1, 1, 1, 1, 10]
+
 for i in range(3):
     neurons = neuronss[i]
     epochs_number = epochs_numbers[i]
@@ -216,6 +218,8 @@ for i in range(3):
     pyplot.legend()
     pyplot.savefig('./images/loss_' + image_name)
     pyplot.show()
+    pyplot.gcf().clear()
+
     pyplot.plot(history.history['fmeasure'], label='train_f1')
     pyplot.plot(history.history['val_fmeasure'], label='test_f1')
     pyplot.ylabel('f1 score')
@@ -223,6 +227,7 @@ for i in range(3):
     pyplot.legend()
     pyplot.savefig('./images/f1_' + image_name)
     pyplot.show()
+    pyplot.gcf().clear()
 
     pyplot.plot(history.history['precision'], label='train_p')
     pyplot.plot(history.history['val_precision'], label='test_p')
@@ -232,6 +237,7 @@ for i in range(3):
     pyplot.xlabel('epoch')
     pyplot.legend()
     pyplot.savefig('./images/pr_' + image_name)
-    # pyplot.show()
+    pyplot.show()
+    pyplot.gcf().clear()
 
 
