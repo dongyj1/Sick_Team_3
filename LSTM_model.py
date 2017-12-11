@@ -8,6 +8,8 @@ Created on Wed Nov  8 15:43:10 2017
 
 
 import numpy as np
+import matplotlib
+matplotlib.use('agg')
 from matplotlib import pyplot
 import pandas as pd
 import os
