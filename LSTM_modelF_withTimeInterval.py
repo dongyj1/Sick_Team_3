@@ -223,6 +223,7 @@ pyplot.plot(history.history['val_fmeasure'], label='test_f1')
 pyplot.legend()
 pyplot.savefig('./images/f1_' + image_name)
 pyplot.show()
+pyplot.gcf().clear()
 
 pyplot.plot(history.history['precision'], label='train_p')
 pyplot.plot(history.history['val_precision'], label='test_p')
