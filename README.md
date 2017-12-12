@@ -117,3 +117,9 @@ Before you run, you need to change "path" to the path direct to "proagain" folde
 
 3.For "Pile Up" & "Log Jam" problem run:
 >python prob_4.py
+
+4.For getting the belt speed change over time run:
+>python speed_time_analysis.py
+
+5.For getting the correlation between belt speed and LFT:
+>python corelation_analysis.py
