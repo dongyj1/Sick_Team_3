@@ -111,7 +111,7 @@ For Tensorflow, run these commands respectively :
 >python Classifiers.py
 
 You should get result figures shown as following:
-[alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/f1_10days_10n_64b_10e_.png)
+![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/f1_10days_10n_64b_10e_.png)
 
 1.For LFT Condition Exploration problem with LSTM model, run:
 >python LSTM_modelF_withTimeInterval.py
