@@ -203,12 +203,8 @@ print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
 
 # test for parameters
 neurons = 10
-<<<<<<< HEAD
 epochs_number = 10
-=======
-epochs_number = 50
->>>>>>> 2fc49327946d6b014e9ebcd4bf97f24881acc01b
-b_number = 32
+b_number = 64
 model = Sequential()
 model.add(LSTM(neurons, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(1))
