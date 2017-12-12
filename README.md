@@ -107,8 +107,17 @@ For Tensorflow, run these commands respectively :
 >pip install --ignore-installed --upgrade tensorflow 
 
 ## 2. How to run our code
-1.For LFT Condition Exploration problem and Speed Attribute Evaluation, run:
+1.For LFT Condition Prediction problem, first you can try several basic models: Logistic Regression, SVM, Random Forest, MLP. 
+>python Classifiers.py
+
+You should get result figures shown as following:
+
+
+1.For LFT Condition Exploration problem with LSTM model, run:
 >python LSTM_modelF_withTimeInterval.py
+
+3.For LFT Condition Exploration problem with LSTM model and time interval feature added, run:
+>python LSTM_model.py
 
 Before you run, you need to change "path" to the path direct to "proagain" folder in your computer.
 
