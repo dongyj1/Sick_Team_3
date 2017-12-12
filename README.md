@@ -110,16 +110,22 @@ For Tensorflow, run these commands respectively :
 1.For LFT Condition Prediction problem, first you can try several basic models: Logistic Regression, SVM, Random Forest, MLP. 
 >python Classifiers.py
 
-You should get result figures shown as following:
-![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/f1_10days_10n_64b_10e_.png)
 
-1.For LFT Condition Exploration problem with LSTM model, run:
->python LSTM_modelF_withTimeInterval.py
-
-3.For LFT Condition Exploration problem with LSTM model and time interval feature added, run:
+2.For LFT Condition Exploration problem with LSTM model, run:
 >python LSTM_model.py
 
 Before you run, you need to change "path" to the path direct to "proagain" folder in your computer.
+Expected figure shown:
+![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/f1_10days_10n_64b_10e_.png)
+![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/loss_10days_10n_64b_10e_.png)
+![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/pr_10days_10n_64b_10e_.png)
+You can also get rating value such as loss and f1 score in the console.
+
+3.For LFT Condition Exploration problem with LSTM model and time interval feature added, run:
+(Before you run, you need to change "path" to the path direct to "proagain" folder in your computer.)
+>python LSTM_modelF_withTimeInterval.py
+
+Similar results should be shown.
 
 2.For Gap Information problem run:
 >python oga_analysis.py
