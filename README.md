@@ -1,5 +1,4 @@
-# How to run the code
-## 1. environment requirment
+# Environment Requirment
 python 3.6.2, keras 2.0.6, numpy, pandas, matplotlib, scikit-learn, tensorflow r1.4 cpu version are required
 
 We recommend you use anaconda to install those packages, please run following commands in your anaconda prompt in Windows(terminal in macOS/Linux):
@@ -19,7 +18,7 @@ For Tensorflow, run these commands respectively :
 
 >pip install --ignore-installed --upgrade tensorflow 
 
-## 2. How to run our code
+# How to run our code
 1.For LFT Condition Prediction problem, first you can try several basic models: Logistic Regression, SVM, Random Forest, MLP. 
 >python Classifiers.py
 
