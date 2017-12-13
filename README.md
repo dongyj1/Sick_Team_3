@@ -1,3 +1,58 @@
+# How to run the code
+## 1. environment requirment
+python 3.6.2, keras 2.0.6, numpy, pandas, matplotlib, scikit-learn, tensorflow r1.4 cpu version are required
+
+We recommend you use anaconda to install those packages, please run following commands in your anaconda prompt in Windows(terminal in macOS/Linux):
+For scikit-learn:
+> conda install -c anaconda scikit-learn
+
+For pandas:
+>conda install pandas
+
+For keras:
+>conda install -c conda-forge keras
+
+For Tensorflow, run these commands respectively :
+>conda create -n tensorflow python=3.6
+
+>activate tensorflow
+
+>pip install --ignore-installed --upgrade tensorflow 
+
+## 2. How to run our code
+1.For LFT Condition Prediction problem, first you can try several basic models: Logistic Regression, SVM, Random Forest, MLP. 
+>python Classifiers.py
+
+
+2.For LFT Condition Exploration problem with LSTM model, run:
+>python LSTM_model.py
+
+Before you run, you need to change "path" to the path direct to "proagain" folder in your computer.
+Expected figure shown:
+![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/f1_10days_10n_64b_10e_.png)
+![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/loss_10days_10n_64b_10e_.png)
+![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/pr_10days_10n_64b_10e_.png)
+You can also get rating value such as loss and f1 score in the console.
+
+3.For LFT Condition Exploration problem with LSTM model and time interval feature added, run:
+(Before you run, you need to change "path" to the path direct to "proagain" folder in your computer.)
+>python LSTM_modelF_withTimeInterval.py
+
+Similar results should be shown.
+
+2.For Gap Information problem run:
+>python oga_analysis.py
+
+3.For "Pile Up" & "Log Jam" problem run:
+>python prob_4.py
+
+4.For getting the belt speed change over time run:
+>python speed_time_analysis.py
+
+5.For getting the correlation between belt speed and LFT:
+>python corelation_analysis.py
+
+
 # -Learning From Sensor Data-
 
 
@@ -81,60 +136,5 @@ Our dataset is provided in XML format which includes two kinds of information ob
 ## 6.2 Speed Attribute Evaluation
 ## 6.3 Gap detection
 For outlier determination with Gap and correlative with timestamp, it is shown that the relation about oga(gap information) and time interval for each object is clearly linear. And the boundary of oga which is used to determine Gap condition is 15.12967427. It is caculated by the coef_ and intercept_ of SVM module.
-## 6.4 "Pile Up" & "Log Jam"
-# 7. Roles
-
-# 8.How to run the code
-
-## 1. environment requirment
-python 3.6.2, keras 2.0.6, numpy, pandas, matplotlib, scikit-learn, tensorflow r1.4 cpu version are required
-
-We recommend you use anaconda to install those packages, please run following commands in your anaconda prompt in Windows(terminal in macOS/Linux):
-For scikit-learn:
-> conda install -c anaconda scikit-learn
-
-For pandas:
->conda install pandas
-
-For keras:
->conda install -c conda-forge keras
-
-For Tensorflow, run these commands respectively :
->conda create -n tensorflow python=3.6
-
->activate tensorflow
-
->pip install --ignore-installed --upgrade tensorflow 
-
-## 2. How to run our code
-1.For LFT Condition Prediction problem, first you can try several basic models: Logistic Regression, SVM, Random Forest, MLP. 
->python Classifiers.py
 
 
-2.For LFT Condition Exploration problem with LSTM model, run:
->python LSTM_model.py
-
-Before you run, you need to change "path" to the path direct to "proagain" folder in your computer.
-Expected figure shown:
-![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/f1_10days_10n_64b_10e_.png)
-![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/loss_10days_10n_64b_10e_.png)
-![alt text](https://github.com/dongyj1/Sick_Team_3/blob/master/images/pr_10days_10n_64b_10e_.png)
-You can also get rating value such as loss and f1 score in the console.
-
-3.For LFT Condition Exploration problem with LSTM model and time interval feature added, run:
-(Before you run, you need to change "path" to the path direct to "proagain" folder in your computer.)
->python LSTM_modelF_withTimeInterval.py
-
-Similar results should be shown.
-
-2.For Gap Information problem run:
->python oga_analysis.py
-
-3.For "Pile Up" & "Log Jam" problem run:
->python prob_4.py
-
-4.For getting the belt speed change over time run:
->python speed_time_analysis.py
-
-5.For getting the correlation between belt speed and LFT:
->python corelation_analysis.py
